@@ -16,7 +16,7 @@ import com.google.ortools.constraintsolver.NodeEvaluator2;
 import com.google.ortools.constraintsolver.RoutingModel;
 
 class TSP_ortools {
-	//test
+	//testTEST
 	static String fileName = "eil51.tsp", line = "START",tspName = fileName.substring(0, fileName.length() - 4);
 	static int size = 0;
 	static boolean openLink=true;
