@@ -100,10 +100,10 @@ public class NN {
 //		System.out.println(startHTML);
 		PrintWriter outputStream = null;
 		try {
-			outputStream = new PrintWriter(new FileOutputStream("nearestNeighbor.html", false));
+			outputStream = new PrintWriter(new FileOutputStream("/htmlFiles/nearestNeighbor.html", false));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found, making file.");
-			PrintWriter writer = new PrintWriter("nearestNeighbor.html", "UTF-8");
+			PrintWriter writer = new PrintWriter("/htmlFiles/nearestNeighbor.html", "UTF-8");
 			writer.close();
 		}
 		outputStream.println(aaa);

@@ -237,10 +237,10 @@ class TSP_ortools {
 //		System.out.println(aaa);
 		PrintWriter outputStream = null;
 		try {
-			outputStream = new PrintWriter(new FileOutputStream("scatter.html", false));
+			outputStream = new PrintWriter(new FileOutputStream("/htmlFiles/scatter.html", false));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found, making file");
-			PrintWriter writer = new PrintWriter("scatter.html", "UTF-8");
+			PrintWriter writer = new PrintWriter("/htmlFiles/scatter.html", "UTF-8");
 			writer.close();
 		}
 		outputStream.println(aaa);
@@ -301,19 +301,19 @@ class TSP_ortools {
 		aaa+=bbb;
 		PrintWriter outputStream = null;
 		try {
-			outputStream = new PrintWriter(new FileOutputStream("solved.html", false));
+			outputStream = new PrintWriter(new FileOutputStream("/htmlFiles/solved.html", false));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found, making file.");
-			PrintWriter writer = new PrintWriter("solved.html", "UTF-8");
+			PrintWriter writer = new PrintWriter("/htmlFiles/solved.html", "UTF-8");
 			writer.close();
 		}
 		outputStream.println(aaa);
 		outputStream.close();
 		
 		if (openLink) {
-			BrowserAPI("scatter.html");
-			BrowserAPI("solved.html");
-			BrowserAPI("nearestNeighbor.html");
+			BrowserAPI("/htmlFiles/scatter.html");
+			BrowserAPI("/htmlFiles/solved.html");
+			BrowserAPI("/htmlFiles/nearestNeighbor.html");
 		}
 		
 	}
