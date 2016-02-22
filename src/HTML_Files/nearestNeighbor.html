@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['X', ''],
+[58,27],
+[58,48],
+[62,42],
+[42,57],
+[27,68],
+[48,28],
+[25,55],
+[25,32],
+[56,37],
+[57,58],
+[5,6],
+[59,15],
+[45,35],
+[32,22],
+[63,69],
+[62,63],
+[43,67],
+[37,69],
+[61,33],
+[46,10],
+[38,46],
+[7,38],
+[30,48],
+[31,62],
+[8,52],
+[16,57],
+[5,64],
+[17,63],
+[10,17],
+[5,25],
+[52,41],
+[37,52],
+[21,10],
+[13,13],
+[17,33],
+[27,23],
+[39,10],
+[30,15],
+[36,16],
+[12,42],
+[32,39],
+[31,32],
+[42,41],
+[51,21],
+[52,33],
+[21,47],
+[40,30],
+[20,26],
+[52,64],
+[49,49],
+]);
+
+        var options = {
+          title: 'Traveling Salesman Solved Nodes (eil51.tsp) - Cost: 448.17904203355056',
+ 			pointSize: 2,
+			lineWidth: 1,
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
