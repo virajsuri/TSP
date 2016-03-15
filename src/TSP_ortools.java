@@ -5,26 +5,41 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Random;
 
 import com.google.ortools.constraintsolver.Assignment;
 import com.google.ortools.constraintsolver.NodeEvaluator2;
 import com.google.ortools.constraintsolver.RoutingModel;
 
+
 class TSP_ortools {
-	//testTEST
-	static String fileName = "eil51.tsp", line = "START",tspName = fileName.substring(0, fileName.length() - 4);
+	static String 
+			absolutePathBase= "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/TSP_Files/", 
+			fileName="bier127.tsp",
+			filePath=absolutePathBase+=fileName,
+			line = "START",
+			tspName = fileName.substring(0, fileName.length() - 4);
+	
 	static int size = 0;
 	static boolean openLink=true;
+	static String 
+			scatter_html = "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/scatter.html", 
+			solved_html="/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/solved.html", 
+			NN_html="/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/nearestNeighbor.html";
+
 	/*
 	Confirmed files
-	eil51
+	test
+	eil51 (4 seconds)
+	eil76 (28 seconds)
+	eil101
+	bier127 (65 seconds)
+	a280 (18 minutes)
 	att532
-	bier127
 	 */
 	
 	static private int[] xs;
@@ -33,7 +48,7 @@ class TSP_ortools {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader(fileName));
+			br = new BufferedReader(new FileReader(filePath));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -79,6 +94,7 @@ class TSP_ortools {
 	
 	static {
 		System.loadLibrary("jniortools");
+		
 	}
 
 	static class RandomManhattan extends NodeEvaluator2 {
@@ -87,23 +103,24 @@ class TSP_ortools {
 			ys = new int[size];
 			
 			//Stat data for sizes
-			LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(fileName)));
-			lnr.skip(Long.MAX_VALUE);int totalLines=lnr.getLineNumber() + 1;lnr.close();
+			LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(filePath)));
+			lnr.skip(Long.MAX_VALUE);int totalLines=lnr.getLineNumber() + 1;
+			lnr.close();
 			
-			System.out.println("\n"+"Name of tsp "+tspName);
-			System.out.println("Total Lines "+totalLines);
-			System.out.println("Size of nodes "+size+"\n");
+			System.out.println("Solving "+fileName);
+			System.out.println(totalLines+" lines in txt");
+			System.out.println(size+ " nodes\n");
 			
 			BufferedReader br = null;
 			try {
-				br = new BufferedReader(new FileReader(fileName));
+				br = new BufferedReader(new FileReader(filePath));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();}
 			
 			boolean initData=true;
 			while(initData) {
 				line=br.readLine();
-				System.out.println(line);
+//				System.out.println(line);
 				if(line.contains("NODE_COORD_SECTION")) {
 					initData=false;
 				}
@@ -176,21 +193,22 @@ class TSP_ortools {
 		int[] solvedRoute=new int[size];
 		if (solution != null) {
 			// Solution cost.
-			System.out.println(size + " nodes");
-			System.out.println("Cost = " + solution.objectiveValue());
+//			System.out.println(size + " nodes");
+//			System.out.println("Cost = " + solution.objectiveValue());
 			// Inspect solution.
 			// Only one route here; otherwise iterate from 0 to
 			// routing.vehicles() - 1
 			int route_number = 0;
 			
 			int counter=0;
+			System.out.print("[");
 			for (long node = routing.start(route_number); !routing.isEnd(node); node = solution
 					.value(routing.nextVar(node))) {
-				System.out.print("" + node + " -> ");
+				System.out.print("" + node + ", ");
 				solvedRoute[counter]=(int) node;
 				counter++;
 			}
-			System.out.println("0");
+			System.out.println("0]");
 		}
 		solvedChart(solvedRoute,solution.objectiveValue());
 		NN obj=new NN();
@@ -198,14 +216,13 @@ class TSP_ortools {
 	}
 
 	public static void scatterChart(int[] xs, int[] ys) throws IOException {
-		String startHTML="";
+		String coordinates="";
 		for(int i=0;i<=xs.length-1;i++) {
 			String coord="["+xs[i]+", "+ys[i]+"],";
-			startHTML+=coord+"\n";
+			coordinates+=coord+"\n";
 		}
-//		System.out.println(startHTML);
 
-		String aaa= "<html>\n" + 
+		String baseHTML= "<html>\n" + 
 				"  <head>\n" + 
 				"    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" + 
 				"    <script type=\"text/javascript\">\n" + 
@@ -214,8 +231,8 @@ class TSP_ortools {
 				"      function drawChart() {\n" + 
 				"        var data = google.visualization.arrayToDataTable([\n" + 
 				"          ['X', ''],";
-		aaa+=startHTML;
-		String bbb= "]);\n" + 
+		
+		String endHTML= "]);\n" + 
 				"\n" + 
 				"        var options = {\n" + 
 				"          title: 'Traveling Salesman Unsolved Nodes (" +fileName+")',\n" + 
@@ -233,28 +250,31 @@ class TSP_ortools {
 				"    <div id=\"chart_div\" style=\"width: 900px; height: 500px;\"></div>\n" + 
 				"  </body>\n" + 
 				"</html>";
-		aaa+=bbb;
-//		System.out.println(aaa);
+		baseHTML+=coordinates;
+		baseHTML+=endHTML;
+		String finalHTML = baseHTML;
+
 		PrintWriter outputStream = null;
 		try {
-			outputStream = new PrintWriter(new FileOutputStream("/htmlFiles/scatter.html", false));
+			outputStream = new PrintWriter(new FileOutputStream(scatter_html, false));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found, making file");
-			PrintWriter writer = new PrintWriter("/htmlFiles/scatter.html", "UTF-8");
+			PrintWriter writer = new PrintWriter(scatter_html, "UTF-8");
 			writer.close();
 		}
-		outputStream.println(aaa);
+		outputStream.println(finalHTML);
 		outputStream.close();
 
 	}
 
 	public static void solvedChart(int[] solvedRoute, long cost) throws IOException {
-		String startHTML="";
+		String coordinates="";
 		for(int i=0;i<=solvedRoute.length-1;i++) {
-			startHTML+="["+xs[solvedRoute[i]]+", "+ys[solvedRoute[i]]+"],"+"\n";
-
+			String coord="["+xs[solvedRoute[i]]+", "+ys[solvedRoute[i]]+"],";
+			coordinates+=coord+"\n";
 		}
-		
+		coordinates+="["+xs[solvedRoute[0]]+", "+ys[solvedRoute[0]]+"]";
+		System.out.println(coordinates);
 		cost=0;
 		int x1,y1,x2,y2;
 		for(int i=0;i<=xs.length-2;i++) {
@@ -262,14 +282,11 @@ class TSP_ortools {
 			y1=ys[i];
 			x2=xs[i+1];
 			y2=ys[i+1];
-			cost+=(Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)));
+			cost+=(Math.sqrt(((x1-x2)*(x1-x2)) + ((y1-y2)*(y1-y2))));
 		}
-		System.out.println(cost + " cost COST");
+		System.out.println("Cost = "+cost);
 		
-		
-		startHTML+="["+xs[solvedRoute[0]]+", "+ys[solvedRoute[0]]+"],"+"\n";
-//		System.out.println(startHTML);
-		String aaa= "<html>\n" + 
+		String baseHTML= "<html>\n" + 
 				"  <head>\n" + 
 				"    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n" + 
 				"    <script type=\"text/javascript\">\n" + 
@@ -278,11 +295,12 @@ class TSP_ortools {
 				"      function drawChart() {\n" + 
 				"        var data = google.visualization.arrayToDataTable([\n" + 
 				"          ['X', ''],\n";
-		aaa+=startHTML;
-		String bbb= "]);\n" + 
+		
+		String endHTML= "]);\n" + 
 				"\n" + 
 				"        var options = {\n" + 
-				"          title: 'Traveling Salesman Solved Nodes ("+fileName+") - Cost: "+cost+"',\n "+ 
+				"          title: 'Traveling Salesman Solved Nodes ("+fileName+") - Cost: "+cost+" Or-Tools Algorithm"
+						+ "',\n "+ 
 				"			pointSize: 2,\n"+
 				"			lineWidth: 1,\n"+
 				"          legend: 'none'\n" + 
@@ -296,24 +314,28 @@ class TSP_ortools {
 				"  </head>\n" + 
 				"  <body>\n" + 
 				"    <div id=\"chart_div\" style=\"width: 900px; height: 500px;\"></div>\n" + 
+				"Path: " + coordinates+
 				"  </body>\n" + 
 				"</html>";
-		aaa+=bbb;
+		baseHTML+=coordinates;
+		baseHTML+=endHTML;
+		String finalHTML = baseHTML;
+		
 		PrintWriter outputStream = null;
 		try {
-			outputStream = new PrintWriter(new FileOutputStream("/htmlFiles/solved.html", false));
+			outputStream = new PrintWriter(new FileOutputStream(solved_html, false));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found, making file.");
-			PrintWriter writer = new PrintWriter("/htmlFiles/solved.html", "UTF-8");
+			PrintWriter writer = new PrintWriter(solved_html, "UTF-8");
 			writer.close();
 		}
-		outputStream.println(aaa);
+		outputStream.println(finalHTML);
 		outputStream.close();
 		
 		if (openLink) {
-			BrowserAPI("/htmlFiles/scatter.html");
-			BrowserAPI("/htmlFiles/solved.html");
-			BrowserAPI("/htmlFiles/nearestNeighbor.html");
+			BrowserAPI(scatter_html);
+			BrowserAPI(solved_html);
+			BrowserAPI(NN_html);
 		}
 		
 	}
