@@ -19,13 +19,13 @@ import com.google.ortools.constraintsolver.RoutingModel;
 class TSP_ortools {
 	static String 
 			absolutePathBase= "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/TSP_Files/", 
-			fileName="bier127.tsp",
+			fileName="eil51.tsp",
 			filePath=absolutePathBase+=fileName,
 			line = "START",
 			tspName = fileName.substring(0, fileName.length() - 4);
 	
 	static int size = 0;
-	static boolean openLink=true;
+	static boolean openLink=false;
 	static String 
 			scatter_html = "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/scatter.html", 
 			solved_html="/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/solved.html", 
