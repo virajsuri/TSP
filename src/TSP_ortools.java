@@ -19,7 +19,7 @@ import com.google.ortools.constraintsolver.RoutingModel;
 class TSP_ortools {
 	static String 
 			absolutePathBase= "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/TSP_Files/", 
-			fileName="eil51.tsp",
+			fileName="eil76.tsp",
 			filePath=absolutePathBase+=fileName,
 			line = "START",
 			tspName = fileName.substring(0, fileName.length() - 4);
