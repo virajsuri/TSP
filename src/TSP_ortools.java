@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.Random;
 
 import com.google.ortools.constraintsolver.Assignment;
@@ -18,8 +18,8 @@ import com.google.ortools.constraintsolver.RoutingModel;
 
 class TSP_ortools {
 	static String 
-			absolutePathBase= "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/TSP_Files/", 
-			fileName="eil76.tsp",
+			absolutePathBase= "src/TSP_Files/", 
+			fileName="eil51.tsp",
 			filePath=absolutePathBase+=fileName,
 			line = "START",
 			tspName = fileName.substring(0, fileName.length() - 4);
@@ -27,9 +27,9 @@ class TSP_ortools {
 	static int size = 0;
 	static boolean openLink=false;
 	static String 
-			scatter_html = "/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/scatter.html", 
-			solved_html="/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/solved.html", 
-			NN_html="/Users/suriv/Desktop/workspace/TravelingSalesman_ORT/HTML_Files/nearestNeighbor.html";
+			scatter_html = "src/HTML_Files/scatter.html", 
+			solved_html="src/HTML_Files/solved.html", 
+			NN_html="src/HTML_Files/nearestNeighbor.html";
 
 	/*
 	Confirmed files
@@ -46,6 +46,7 @@ class TSP_ortools {
 	static private int[] ys;
 	
 	public static void main(String[] args) throws Exception {
+	    
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(filePath));

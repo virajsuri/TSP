@@ -63,7 +63,9 @@ public class NN {
 				
 		}
 		coordinates+="["+highestX+", "+highestY+"]";
+		System.out.println("\n"+"NN Coordinates:");
 		System.out.println(coordinates);
+		System.out.println("Cost = "+Math.round(cost));
 		
 		makeNNURL(coordinates, fileName,cost);
 		
